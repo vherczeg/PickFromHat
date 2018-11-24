@@ -1,0 +1,14 @@
+{
+  "fromEmail":"yourmail@gmail.com",
+  "fromPassword":"yourpassword",
+  "names":[
+    {
+      "email":"to1@gmail.com",
+      "name":"MrTo1"
+    },
+    {
+      "email":"to2@gmail.com",
+      "name":"MrsTo2"
+    }
+  ]
+}
