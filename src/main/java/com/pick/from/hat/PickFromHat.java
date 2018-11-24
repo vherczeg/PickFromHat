@@ -4,8 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -25,9 +24,8 @@ public class PickFromHat {
     private static void loadNamesWithMailAddress() {
         JSONParser parser = new JSONParser();
         try {
-            URL fileUrl = PickFromHat.class.getResource(namesJsonFile);
-            File file = new File(fileUrl.toURI());
-            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(file));
+            InputStream is = PickFromHat.class.getResourceAsStream(namesJsonFile);
+            JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(is, "UTF-8"));
             fromEmail = (String) jsonObject.get("fromEmail");
             fromPassword = (String) jsonObject.get("fromPassword");
             JSONArray mail2names = (JSONArray) jsonObject.get("names");
