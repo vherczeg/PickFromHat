@@ -3,12 +3,16 @@
   "fromPassword":"yourpassword",
   "names":[
     {
-      "email":"to1@gmail.com",
+      "email":"to1@yahoo.com",
       "name":"MrTo1"
     },
     {
-      "email":"to2@gmail.com",
+      "email":"to2@amazon.com",
       "name":"MrsTo2"
+    },
+    {
+      "email":"to3@usgov.com",
+      "name":"MsTo3"
     }
   ]
 }

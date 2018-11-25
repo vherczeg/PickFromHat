@@ -1,5 +1,5 @@
 # PickFromHat
-Pick a named note from the hat, what won't be your's and send mails for participants.
+Pick a named note from the hat, what won't be your's and send mails for participants with a gmail address.
 
 ## Setup
 Configure src\main\resources\settings.json
@@ -22,8 +22,8 @@ e.g.:
 }
 ```
 
-## Execute produced jar
-- cd .../PickFromHat
+## Execution
+- cd \<\<projectRoot>>
 - mvn clean package
 - cd target
 - java -jar Pick\<\<TAB>>
