@@ -5,23 +5,27 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class PickFromHat {
-    private static Map<String, String> email2name = new HashMap<String, String>();
-    private static List<String> names = new ArrayList<String>();
-    private static String namesJsonFile = "/settings.json";
-    private static String fromEmail;
-    private static String fromPassword;
+    private List<Person> persons = new ArrayList<Person>();
+    private List<Person> choosedPersons = new ArrayList<Person>();
+    private String namesJsonFile = "/settings.json";
+    private String fromEmail;
+    private String fromPassword;
 
     public static void main(String[] args) {
+        PickFromHat pickFromHat = new PickFromHat();
+        pickFromHat.startPickFromHat();
+    }
+
+    public void startPickFromHat() {
         loadNamesWithMailAddress();
         suffleNames();
         sendMails();
     }
 
-    private static void loadNamesWithMailAddress() {
+    private void loadNamesWithMailAddress() {
         JSONParser parser = new JSONParser();
         try {
             InputStream is = PickFromHat.class.getResourceAsStream(namesJsonFile);
@@ -34,27 +38,27 @@ public class PickFromHat {
                 String email = (String) mail2name.get("email");
                 String name = (String) mail2name.get("name");
 
-                email2name.put(email, name);
-                names.add(name);
+                Person person = new Person(name, email);
+                persons.add(person);
+                choosedPersons.add(person);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void suffleNames() {
-        Collections.shuffle(names);
+    private void suffleNames() {
+        Collections.shuffle(choosedPersons);
 
         boolean noSelfPicking;
         do {
             int i = 0;
             noSelfPicking = true;
-            for (String email : email2name.keySet()) {
-                String name = email2name.get(email);
-                String pickedName = names.get(i);
-                if (name.equals(pickedName)) {
+            for (Person person : persons) {
+                Person choosedPerson = choosedPersons.get(i);
+                if (person.equals(choosedPerson)) {
                     noSelfPicking = false;
-                    Collections.shuffle(names);
+                    Collections.shuffle(choosedPersons);
                     break;
                 }
                 i++;
@@ -62,14 +66,13 @@ public class PickFromHat {
         } while (!noSelfPicking);
     }
 
-    private static void sendMails() {
+    private void sendMails() {
         int i = 0;
-        for (String email : email2name.keySet()) {
-            String name = email2name.get(email);
+        for (Person person : persons) {
             String title = "You picked a name from a hat";
-            String htmlBody = "Hi my friend " + name + "!<br />Congratulation!!! Your chosen one is <b>" + names.get(i)
-                    + "</b>!!!<br />Don't spend too much money for others, except Viktor! ;)<br />Bye";
-            SendMail.sendMail(fromEmail, fromPassword, email, title, htmlBody);
+            String htmlBody = "Hi my friend " + person.getName() + "!<br />Congratulation!!! Your chosen one is <b>" + choosedPersons.get(i).getName()
+                    + "</b>, his/her mail address is " + choosedPersons.get(i).getEmail() + "!!! <br />Don't spend too much money for others, except Viktor! ;)<br />Bye";
+            SendMail.sendMail(fromEmail, fromPassword, person.getEmail(), title, htmlBody);
             i++;
         }
     }
